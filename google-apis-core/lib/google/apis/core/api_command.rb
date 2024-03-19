@@ -99,18 +99,11 @@ module Google
           return super unless response_representation
           return super if options && options.skip_deserialization
           return super if content_type.nil?
-          pp content_type
-          return nil unless [JSON_CONTENT_TYPE, CSV_CONTENT_TYPE].find do |x|
-            content_type.start_with?(x)
-          end
+          return body if content_type.start_with?(CSV_CONTENT_TYPE)
+          return nil unless content_type.start_with?(JSON_CONTENT_TYPE)
+
           body = "{}" if body.empty?
 
-          if content_type.start_with?(CSV_CONTENT_TYPE)
-            body = {
-              data: body
-            }.to_json
-          end
-          pp body
           instance = response_class.new
           response_representation.new(instance).from_json(body, unwrap: response_class)
           instance
