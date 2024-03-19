@@ -100,7 +100,9 @@ module Google
           return super if options && options.skip_deserialization
           return super if content_type.nil?
           pp content_type
-          return nil unless [JSON_CONTENT_TYPE, CSV_CONTENT_TYPE].include?(content_type)
+          return nil unless [JSON_CONTENT_TYPE, CSV_CONTENT_TYPE].find do |x|
+            content_type.start_with?(x)
+          end
           body = "{}" if body.empty?
           instance = response_class.new
           response_representation.new(instance).from_json(body, unwrap: response_class)
