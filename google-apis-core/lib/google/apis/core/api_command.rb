@@ -26,6 +26,7 @@ module Google
       # Command for executing most basic API request with JSON requests/responses
       class ApiCommand < HttpCommand
         JSON_CONTENT_TYPE = 'application/json'
+        CSV_CONTENT_TYPE = 'text/csv'
         FIELDS_PARAM = 'fields'
         ERROR_REASON_MAPPING = {
           'rateLimitExceeded' => Google::Apis::RateLimitError,
@@ -98,8 +99,7 @@ module Google
           return super unless response_representation
           return super if options && options.skip_deserialization
           return super if content_type.nil?
-          pp "fooooobar"
-          return nil unless content_type.start_with?(JSON_CONTENT_TYPE)
+          return nil unless [JSON_CONTENT_TYPE, CSV_CONTENT_TYPE].include?(content_type)
           body = "{}" if body.empty?
           instance = response_class.new
           response_representation.new(instance).from_json(body, unwrap: response_class)
