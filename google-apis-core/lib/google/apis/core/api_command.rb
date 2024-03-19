@@ -98,6 +98,7 @@ module Google
           return super unless response_representation
           return super if options && options.skip_deserialization
           return super if content_type.nil?
+          pp "fooooobar"
           return nil unless content_type.start_with?(JSON_CONTENT_TYPE)
           body = "{}" if body.empty?
           instance = response_class.new
