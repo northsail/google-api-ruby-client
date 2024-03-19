@@ -110,6 +110,7 @@ module Google
               data: body
             }.to_json
           end
+          pp body
           instance = response_class.new
           response_representation.new(instance).from_json(body, unwrap: response_class)
           instance
